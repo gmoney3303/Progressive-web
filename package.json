@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start:dev": "",
-    "start": "node client/src/js/index.js ",
+    "start": " ",
     "server": "",
     "build": "",
     "install": "",
