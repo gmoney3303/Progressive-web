@@ -12,54 +12,24 @@ module.exports = () => {
     },
     output: {
       filename: '[name].bundle.js',
-      path: path.resolve(__dirname, 'dist'),
+      path: path.resolve(__dirname, 'dist'), // Adjust the output path
     },
     plugins: [
       new HtmlWebpackPlugin({
-        template: './src/index.html',
-        chunks: ['main'],
-        filename: 'index.html',
-      }),
-      new HtmlWebpackPlugin({
-        template: './src/install.html',
-        chunks: ['install'],
-        filename: 'install.html',
+        template: './index.html', // Adjust the path to your index.html
+        filename: 'index.html', // Output filename
       }),
       new WebpackPwaManifest({
-        name: 'YourPWAName',
-        short_name: 'PWA',
-        description: 'Your PWA description',
-        background_color: '#ffffff',
-        theme_color: '#000000',
-        icons: [
-          {
-            src: path.resolve('src/images/icon.png'),
-            sizes: [96, 128, 192, 256, 384, 512],
-            destination: path.join('icons'),
-          },
-        ],
+        // Your manifest configuration
       }),
       new InjectManifest({
-        swSrc: './src/sw.js',
-        swDest: 'service-worker.js',
+        // Your workbox configuration
       }),
     ],
+
     module: {
       rules: [
-        {
-          test: /\.css$/,
-          use: ['style-loader', 'css-loader'],
-        },
-        {
-          test: /\.js$/,
-          exclude: /node_modules/,
-          use: {
-            loader: 'babel-loader',
-            options: {
-              presets: ['@babel/preset-env'],
-            },
-          },
-        },
+        // Add your CSS loaders and babel configuration here
       ],
     },
   };
