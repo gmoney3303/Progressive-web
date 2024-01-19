@@ -30,22 +30,24 @@ warmStrategyCache({
 registerRoute(({ request }) => request.mode === 'navigate', pageCache);
 
 // Cache assets with StaleWhileRevalidate strategy
-registerRoute(
-  ({ request }) => request.destination === 'style' || request.destination === 'script',
-  new StaleWhileRevalidate({
-    cacheName: 'assets-cache',
-  })
-);
+// registerRoute(
+//   ({ request }) => request.destination === 'style' || request.destination === 'script',
+//   new StaleWhileRevalidate({
+//     cacheName: 'assets-cache',
+//   })
+// );
 
 // Cache images with CacheFirst strategy
 registerRoute(
-  ({ request }) => request.destination === 'image',
-  new CacheFirst({
-    cacheName: 'images-cache',
+  // Here we define the callback function that will filter the requests we want to cache (in this case, JS and CSS files)
+  ({ request }) => ['style', 'script', 'worker'].includes(request.destination),
+  new StaleWhileRevalidate({
+    // Name of the cache storage.
+    cacheName: 'asset-cache',
     plugins: [
-      new ExpirationPlugin({
-        maxEntries: 50, // Limit the number of entries in the cache
-        maxAgeSeconds: 7 * 24 * 60 * 60, // 7 days
+      // This plugin will cache responses with these headers to a maximum-age of 30 days
+      new CacheableResponsePlugin({
+        statuses: [0, 200],
       }),
     ],
   })
